@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dfxml xmloutputversion='1.0'>
+  <metadata 
+  xmlns='http://afflib.org/tcpflow/' 
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+  xmlns:dc='http://purl.org/dc/elements/1.1/'>
+    <dc:type>Feature Extraction</dc:type>
+  </metadata>
+  <creator version='1.0'>
+    <program>TCPFLOW</program>
+    <version>1.5.0</version>
+    <build_environment>
+      <compiler>7.5.0 (7.5.0)</compiler>
+      <CPPFLAGS>-pthread -I/usr/local/include -I/usr/local/include  -DUTC_OFFSET=+0000 </CPPFLAGS>
+      <CFLAGS>-g   -pthread -g -O3 -MD -Wpointer-arith -Wmissing-declarations -Wmissing-prototypes -Wshadow -Wwrite-strings -Wcast-align -Waggregate-return -Wbad-function-cast -Wcast-qual -Wundef -Wredundant-decls -Wdisabled-optimization -Wfloat-equal -Wmultichar -Wc++-compat -Wmissing-noreturn -Wall -Wstrict-prototypes -MD -D_FORTIFY_SOURCE=2 -Wpointer-arith -Wmissing-declarations -Wmissing-prototypes -Wshadow -Wwrite-strings -Wcast-align -Waggregate-return -Wbad-function-cast -Wcast-qual -Wundef -Wredundant-decls -Wdisabled-optimization -Wfloat-equal -Wmultichar -Wc++-compat -Wmissing-noreturn -Wall -Wstrict-prototypes</CFLAGS>
+      <CXXFLAGS>-g -pthread -g -O3 -Wall -MD -D_FORTIFY_SOURCE=2 -Wpointer-arith -Wshadow -Wwrite-strings -Wcast-align -Wredundant-decls -Wdisabled-optimization -Wfloat-equal -Wmultichar -Wmissing-noreturn -Woverloaded-virtual -Wsign-promo -funit-at-a-time -Weffc++ -Wall -MD -D_FORTIFY_SOURCE=2 -Wpointer-arith -Wshadow -Wwrite-strings -Wcast-align -Wredundant-decls -Wdisabled-optimization -Wfloat-equal -Wmultichar -Wmissing-noreturn -Woverloaded-virtual -Wsign-promo -funit-at-a-time -Wstrict-null-sentinel -Weffc++ </CXXFLAGS>
+      <LDFLAGS>-L/usr/local/lib -L/usr/local/lib </LDFLAGS>
+      <LIBS>-lpcap -lcairo -lfontconfig -lfreetype -lpixman-1 -lexpat  -lsqlite3 -lcrypto -lssl -lcrypto -ldl -lz </LIBS>
+      <compilation_date>2020-06-04T22:58:40</compilation_date>
+      <library name="boost" version="107100"/>
+      <library name="sqlite" version="3.31.1" source_id="2020-01-27 19:55:54 3bfa9cc97da10598521b342961df8f5f68c7388fa117345eeb516eaa837balt1"/>
+    </build_environment>
+    <execution_environment>
+      <os_sysname>Linux</os_sysname>
+      <os_release>5.4.0-42-generic</os_release>
+      <os_version>#46-Ubuntu SMP Fri Jul 10 00:24:02 UTC 2020</os_version>
+      <host>asus</host>
+      <arch>x86_64</arch>
+      <command_line>tcpflow -r /home/duong/Desktop/Do-An/QuickCheck_Virus/Test.pcap -o /home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53 -e http</command_line>
+      <uid>1000</uid>
+      <username>duong</username>
+      <start_time>2020-08-19T02:53:54Z</start_time>
+    </execution_environment>
+  </creator>
+  <configuration>
+  </configuration>
+  <tdelta>0</tdelta>
+  <configuration>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/013.075.038.007.00443-192.168.008.100.46944</filename>
+      <filesize>604</filesize>
+      <tcpflow startime='2020-08-19T02:52:53.622256Z' endtime='2020-08-19T02:52:53.622256Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='13.75.38.7' dst_ipn='192.168.8.100' srcport='443' dstport='46944' packets='1' len='670' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.46944-013.075.038.007.00443</filename>
+      <filesize>31</filesize>
+      <tcpflow startime='2020-08-19T02:52:53.622871Z' endtime='2020-08-19T02:52:53.622928Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='13.75.38.7' srcport='46944' dstport='443' packets='2' len='163' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.48660-031.013.077.015.00443</filename>
+      <filesize>858</filesize>
+      <tcpflow startime='2020-08-19T02:53:00.784074Z' endtime='2020-08-19T02:53:01.687067Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='31.13.77.15' srcport='48660' dstport='443' packets='10' len='1526' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/031.013.077.015.00443-192.168.008.100.48660</filename>
+      <filesize>479</filesize>
+      <tcpflow startime='2020-08-19T02:53:01.389893Z' endtime='2020-08-19T02:53:01.921023Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='31.13.77.15' dst_ipn='192.168.8.100' srcport='443' dstport='48660' packets='9' len='1093' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/111.221.029.254.00443-192.168.008.100.43340</filename>
+      <filesize>4390</filesize>
+      <tcpflow startime='2020-08-19T02:53:00.565519Z' endtime='2020-08-19T02:53:02.471394Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='111.221.29.254' dst_ipn='192.168.8.100' srcport='443' dstport='43340' packets='6' len='4794' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.43340-111.221.029.254.00443</filename>
+      <filesize>2160</filesize>
+      <tcpflow startime='2020-08-19T02:52:59.652060Z' endtime='2020-08-19T02:53:02.472084Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='111.221.29.254' srcport='43340' dstport='443' packets='11' len='2894' />
+    </fileobject>
+    <fileobject>
+      <filesize>0</filesize>
+      <tcpflow startime='2020-08-19T02:52:57.048551Z' endtime='2020-08-19T02:53:02.687638Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='45.77.251.48' srcport='53566' dstport='80' packets='3' len='206' />
+    </fileobject>
+    <fileobject>
+      <filesize>0</filesize>
+      <tcpflow startime='2020-08-19T02:52:57.047035Z' endtime='2020-08-19T02:53:02.687675Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='45.77.251.48' srcport='53564' dstport='80' packets='3' len='206' />
+    </fileobject>
+    <fileobject>
+      <filesize>0</filesize>
+      <tcpflow startime='2020-08-19T02:52:56.936687Z' endtime='2020-08-19T02:53:02.687689Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='45.77.251.48' srcport='53562' dstport='80' packets='3' len='206' />
+    </fileobject>
+    <fileobject>
+      <filesize>0</filesize>
+      <tcpflow startime='2020-08-19T02:52:57.438816Z' endtime='2020-08-19T02:53:02.917448Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='45.77.251.48' dst_ipn='192.168.8.100' srcport='80' dstport='53566' packets='3' len='206' />
+    </fileobject>
+    <fileobject>
+      <filesize>0</filesize>
+      <tcpflow startime='2020-08-19T02:52:57.438898Z' endtime='2020-08-19T02:53:02.919665Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='45.77.251.48' dst_ipn='192.168.8.100' srcport='80' dstport='53564' packets='3' len='206' />
+    </fileobject>
+    <fileobject>
+      <filesize>0</filesize>
+      <tcpflow startime='2020-08-19T02:52:57.444437Z' endtime='2020-08-19T02:53:02.927895Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='45.77.251.48' dst_ipn='192.168.8.100' srcport='80' dstport='53562' packets='2' len='140' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/216.058.220.196.00443-192.168.008.100.56880</filename>
+      <filesize>2629</filesize>
+      <tcpflow startime='2020-08-19T02:52:56.619626Z' endtime='2020-08-19T02:53:07.167334Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='216.58.220.196' dst_ipn='192.168.8.100' srcport='443' dstport='56880' packets='9' len='3247' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/045.077.251.048.00080-192.168.008.100.53560</filename>
+      <filesize>151940</filesize>
+      <tcpflow startime='2020-08-19T02:52:57.187314Z' endtime='2020-08-19T02:53:08.502445Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='45.77.251.48' dst_ipn='192.168.8.100' srcport='80' dstport='53560' packets='91' out_of_order_count='1' len='159198' />
+      
+    <byte_runs>
+     <byte_run file_offset='388'><fileobject><filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/045.077.251.048.00080-192.168.008.100.53560-HTTPBODY-001.zip</filename><filesize>151552</filesize></fileobject></byte_run>
+    </byte_runs>
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.53560-045.077.251.048.00080</filename>
+      <filesize>493</filesize>
+      <tcpflow startime='2020-08-19T02:52:56.707845Z' endtime='2020-08-19T02:53:08.502681Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='45.77.251.48' srcport='53560' dstport='80' packets='88' len='6321' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.38162-216.058.200.074.00443</filename>
+      <filesize>63</filesize>
+      <tcpflow startime='2020-08-19T02:53:10.688363Z' endtime='2020-08-19T02:53:10.688552Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='216.58.200.74' srcport='38162' dstport='443' packets='2' len='195' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/111.221.029.254.00443-192.168.008.100.43346</filename>
+      <filesize>4390</filesize>
+      <tcpflow startime='2020-08-19T02:53:08.616666Z' endtime='2020-08-19T02:53:12.997515Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='111.221.29.254' dst_ipn='192.168.8.100' srcport='443' dstport='43346' packets='6' out_of_order_count='1' len='6082' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.43346-111.221.029.254.00443</filename>
+      <filesize>1951</filesize>
+      <tcpflow startime='2020-08-19T02:53:07.774681Z' endtime='2020-08-19T02:53:12.998476Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='111.221.29.254' srcport='43346' dstport='443' packets='11' len='2697' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.57746-031.013.077.037.00443</filename>
+      <filesize>63</filesize>
+      <tcpflow startime='2020-08-19T02:53:14.688931Z' endtime='2020-08-19T02:53:14.689158Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='31.13.77.37' srcport='57746' dstport='443' packets='2' len='195' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/031.013.077.037.00443-192.168.008.100.57746</filename>
+      <filesize>24</filesize>
+      <tcpflow startime='2020-08-19T02:53:16.464157Z' endtime='2020-08-19T02:53:16.464468Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='31.13.77.37' dst_ipn='192.168.8.100' srcport='443' dstport='57746' packets='3' len='222' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/111.221.029.254.00443-192.168.008.100.43348</filename>
+      <filesize>4390</filesize>
+      <tcpflow startime='2020-08-19T02:53:22.337724Z' endtime='2020-08-19T02:53:26.203143Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='111.221.29.254' dst_ipn='192.168.8.100' srcport='443' dstport='43348' packets='10' out_of_order_count='1' len='6370' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.43348-111.221.029.254.00443</filename>
+      <filesize>1755</filesize>
+      <tcpflow startime='2020-08-19T02:53:22.001411Z' endtime='2020-08-19T02:53:26.203633Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='111.221.29.254' srcport='43348' dstport='443' packets='15' out_of_order_count='2' len='2951' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.38822-137.059.033.209.00443</filename>
+      <filesize>63</filesize>
+      <tcpflow startime='2020-08-19T02:53:45.689650Z' endtime='2020-08-19T02:53:45.689880Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='137.59.33.209' srcport='38822' dstport='443' packets='2' len='195' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/096.007.097.152.00443-192.168.008.100.44762</filename>
+      <filesize>765</filesize>
+      <tcpflow startime='2020-08-19T02:53:45.566327Z' endtime='2020-08-19T02:53:45.718937Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='96.7.97.152' dst_ipn='192.168.8.100' srcport='443' dstport='44762' packets='6' len='1169' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/137.059.033.209.00443-192.168.008.100.38822</filename>
+      <filesize>24</filesize>
+      <tcpflow startime='2020-08-19T02:53:45.726904Z' endtime='2020-08-19T02:53:45.728335Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='137.59.33.209' dst_ipn='192.168.8.100' srcport='443' dstport='38822' packets='2' len='156' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.44762-096.007.097.152.00443</filename>
+      <filesize>680</filesize>
+      <tcpflow startime='2020-08-19T02:53:45.402007Z' endtime='2020-08-19T02:53:45.728978Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='96.7.97.152' srcport='44762' dstport='443' packets='8' len='1216' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.229.232.200.00443-192.168.008.100.60364</filename>
+      <filesize>8011</filesize>
+      <tcpflow startime='2020-08-19T02:53:45.925898Z' endtime='2020-08-19T02:53:46.629986Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='192.229.232.200' dst_ipn='192.168.8.100' srcport='443' dstport='60364' packets='14' out_of_order_count='1' len='10057' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.60364-192.229.232.200.00443</filename>
+      <filesize>1392</filesize>
+      <tcpflow startime='2020-08-19T02:53:45.848679Z' endtime='2020-08-19T02:53:46.631470Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='192.229.232.200' srcport='60364' dstport='443' packets='18' len='2396' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/013.107.013.093.00443-192.168.008.100.50646</filename>
+      <filesize>1200</filesize>
+      <tcpflow startime='2020-08-19T02:53:52.357470Z' endtime='2020-08-19T02:53:52.897634Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='13.107.13.93' dst_ipn='192.168.8.100' srcport='443' dstport='50646' packets='6' len='1536' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.50646-013.107.013.093.00443</filename>
+      <filesize>1075</filesize>
+      <tcpflow startime='2020-08-19T02:53:50.742331Z' endtime='2020-08-19T02:53:52.899901Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='13.107.13.93' srcport='50646' dstport='443' packets='9' len='1601' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.42139-139.099.069.088.00080</filename>
+      <filesize>16870</filesize>
+      <tcpflow startime='2020-08-19T02:53:15.392007Z' endtime='2020-08-19T02:53:53.644069Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='139.99.69.88' srcport='42139' dstport='80' packets='1512' out_of_order_count='1' len='117081' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/091.108.056.159.00443-192.168.008.100.33704</filename>
+      <filesize>267</filesize>
+      <tcpflow startime='2020-08-19T02:53:15.854345Z' endtime='2020-08-19T02:53:36.353281Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='91.108.56.159' dst_ipn='192.168.8.100' srcport='443' dstport='33704' packets='10' out_of_order_count='3' len='1206' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/031.013.077.015.00443-192.168.008.100.48658</filename>
+      <filesize>2217</filesize>
+      <tcpflow startime='2020-08-19T02:53:01.197710Z' endtime='2020-08-19T02:53:01.917589Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='31.13.77.15' dst_ipn='192.168.8.100' srcport='443' dstport='48658' packets='11' len='2951' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/139.099.122.045.00080-192.168.008.100.40473</filename>
+      <filesize>208</filesize>
+      <tcpflow startime='2020-08-19T02:53:00.547215Z' endtime='2020-08-19T02:53:52.979163Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='139.99.122.45' dst_ipn='192.168.8.100' srcport='80' dstport='40473' packets='11' out_of_order_count='1' len='998' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.49410-157.240.199.035.00443</filename>
+      <filesize>4251</filesize>
+      <tcpflow startime='2020-08-19T02:52:59.572543Z' endtime='2020-08-19T02:53:25.427001Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='157.240.199.35' srcport='49410' dstport='443' packets='17' out_of_order_count='1' len='5859' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.40473-139.099.122.045.00080</filename>
+      <filesize>252</filesize>
+      <tcpflow startime='2020-08-19T02:52:58.926959Z' endtime='2020-08-19T02:53:52.979183Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='139.99.122.45' srcport='40473' dstport='80' packets='12' out_of_order_count='1' len='1119' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.56880-216.058.220.196.00443</filename>
+      <filesize>581</filesize>
+      <tcpflow startime='2020-08-19T02:52:55.491897Z' endtime='2020-08-19T02:53:53.522402Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='216.58.220.196' srcport='56880' dstport='443' packets='12' len='1401' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/139.099.069.088.00080-192.168.008.100.42139</filename>
+      <filesize>725575</filesize>
+      <tcpflow startime='2020-08-19T02:52:53.523325Z' endtime='2020-08-19T02:53:53.643857Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='139.99.69.88' dst_ipn='192.168.8.100' srcport='80' dstport='42139' packets='3478' out_of_order_count='23' len='955229' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.50200-031.013.077.017.00443</filename>
+      <filesize>900</filesize>
+      <tcpflow startime='2020-08-19T02:52:56.008547Z' endtime='2020-08-19T02:53:46.789973Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='31.13.77.17' srcport='50200' dstport='443' packets='37' out_of_order_count='2' len='3885' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.48658-031.013.077.015.00443</filename>
+      <filesize>1035</filesize>
+      <tcpflow startime='2020-08-19T02:53:00.533606Z' endtime='2020-08-19T02:53:01.917609Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='31.13.77.15' srcport='48658' dstport='443' packets='13' len='1901' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/192.168.008.100.33704-091.108.056.159.00443</filename>
+      <filesize>404</filesize>
+      <tcpflow startime='2020-08-19T02:53:14.311233Z' endtime='2020-08-19T02:53:35.942561Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='91.108.56.159' srcport='33704' dstport='443' packets='11' out_of_order_count='1' len='1255' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/031.013.077.017.00443-192.168.008.100.50200</filename>
+      <filesize>1688</filesize>
+      <tcpflow startime='2020-08-19T02:52:56.917422Z' endtime='2020-08-19T02:53:46.789838Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='31.13.77.17' dst_ipn='192.168.8.100' srcport='443' dstport='50200' packets='36' out_of_order_count='2' len='4502' />
+    </fileobject>
+    <fileobject>
+      <filename>/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/19-08-2020-09-53/157.240.199.035.00443-192.168.008.100.49410</filename>
+      <filesize>3427</filesize>
+      <tcpflow startime='2020-08-19T02:53:00.318404Z' endtime='2020-08-19T02:53:26.125670Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='157.240.199.35' dst_ipn='192.168.8.100' srcport='443' dstport='49410' packets='15' len='4417' />
+    </fileobject>
+  </configuration>
+  <summary />
+  <open_fds_at_end>13</open_fds_at_end>
+  <max_open_flows>17</max_open_flows>
+  <total_flows>43</total_flows>
+  <flow_map_size>13</flow_map_size>
+  <total_packets>5533</total_packets>
+  <rusage>
+    <utime>0.015732</utime>
+    <stime>0.019666</stime>
+    <maxrss>12016</maxrss>
+    <minflt>1311</minflt>
+    <majflt>7</majflt>
+    <nswap>0</nswap>
+    <inblock>2440</inblock>
+    <oublock>2424</oublock>
+    <clocktime>0.018156</clocktime>
+  </rusage>
+</dfxml>

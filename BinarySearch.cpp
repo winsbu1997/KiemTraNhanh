@@ -51,14 +51,14 @@ class HashScannerZ{
 };
 
 HashScannerZ::HashScannerZ(){
-    pathz[0]="MD5_01";
-    pathz[1]="MD5_23";
-    pathz[2]="MD5_45";
-    pathz[3]="MD5_67";
-    pathz[4]="MD5_89";
-    pathz[5]="MD5_AB";
-    pathz[6]="MD5_CD";
-    pathz[7]="MD5_EF";
+    pathz[0]="db/MD5_01";
+    pathz[1]="db/MD5_23";
+    pathz[2]="db/MD5_45";
+    pathz[3]="db/MD5_67";
+    pathz[4]="db/MD5_89";
+    pathz[5]="db/MD5_AB";
+    pathz[6]="db/MD5_CD";
+    pathz[7]="db/MD5_EF";
 }
 
 Virus HashScannerZ::getVirus(int pos){
@@ -153,7 +153,7 @@ ResultScan HashScannerZ::Scan(string Path){
 string HashScannerZ::getMD5(string Path){
     string path='"'+Path+'"';
     string cmd="md5sum "+path+" > res.txt";
-    cout<<cmd<<endl;
+    //cout<<cmd<<endl;
     system(cmd.c_str());
     ifstream fi("res.txt");
     string res;
@@ -222,11 +222,18 @@ void HashScannerZ::LoadDB(string Path){
     fclose(pFile);f.close();
 }
 
-int main(){
-    HashScannerZ hash=HashScannerZ();
-    //cout<<hash.getMD5("PCapy.py")<<endl;
-    //cout<<hash.Scan("Untitled X.exe").isVirus;
-    //hash.LoadDB("MD5_89");
-    hash.Update("Update.txt");
-    //ReadFile();
+int main(int argc, char *argv[]){
+    //cout<<argc<<endl;
+    if(argc > 1){
+        HashScannerZ hash=HashScannerZ();
+        //cout<<argv[1];
+        //cout<<hash.getMD5("PCapy.py")<<endl;
+        cout<<hash.Scan(argv[1]).VirusName;
+    }
+    else{
+        cout << endl << "Enter again:";
+    }
+    
+    //hash.LoadDB("db/MD5_AB");
+    //hash.Update("Update.txt");
 }

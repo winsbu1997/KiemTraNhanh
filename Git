@@ -1,4 +1,0 @@
-git init
-git remote add origin master https://github.com/winsbu1997/KiemTraNhanh.git
-git commit -m "version_1"
-git push -u origin master 
