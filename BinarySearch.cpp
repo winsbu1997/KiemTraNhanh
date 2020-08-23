@@ -228,7 +228,7 @@ int main(int argc, char *argv[]){
         HashScannerZ hash=HashScannerZ();
         //cout<<argv[1];
         //cout<<hash.getMD5("PCapy.py")<<endl;
-        cout<<hash.Scan(argv[1]).VirusName;
+        cout<<hash.Scan(argv[1]).VirusName<< "/" << hash.getMD5(argv[1]);
     }
     else{
         cout << endl << "Enter again:";

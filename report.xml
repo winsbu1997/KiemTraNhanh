@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dfxml xmloutputversion='1.0'>
+  <metadata 
+  xmlns='http://afflib.org/tcpflow/' 
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+  xmlns:dc='http://purl.org/dc/elements/1.1/'>
+    <dc:type>Feature Extraction</dc:type>
+  </metadata>
+  <creator version='1.0'>
+    <program>TCPFLOW</program>
+    <version>1.5.0</version>
+    <build_environment>
+      <compiler>7.5.0 (7.5.0)</compiler>
+      <CPPFLAGS>-pthread -I/usr/local/include -I/usr/local/include  -DUTC_OFFSET=+0000 </CPPFLAGS>
+      <CFLAGS>-g   -pthread -g -O3 -MD -Wpointer-arith -Wmissing-declarations -Wmissing-prototypes -Wshadow -Wwrite-strings -Wcast-align -Waggregate-return -Wbad-function-cast -Wcast-qual -Wundef -Wredundant-decls -Wdisabled-optimization -Wfloat-equal -Wmultichar -Wc++-compat -Wmissing-noreturn -Wall -Wstrict-prototypes -MD -D_FORTIFY_SOURCE=2 -Wpointer-arith -Wmissing-declarations -Wmissing-prototypes -Wshadow -Wwrite-strings -Wcast-align -Waggregate-return -Wbad-function-cast -Wcast-qual -Wundef -Wredundant-decls -Wdisabled-optimization -Wfloat-equal -Wmultichar -Wc++-compat -Wmissing-noreturn -Wall -Wstrict-prototypes</CFLAGS>
+      <CXXFLAGS>-g -pthread -g -O3 -Wall -MD -D_FORTIFY_SOURCE=2 -Wpointer-arith -Wshadow -Wwrite-strings -Wcast-align -Wredundant-decls -Wdisabled-optimization -Wfloat-equal -Wmultichar -Wmissing-noreturn -Woverloaded-virtual -Wsign-promo -funit-at-a-time -Weffc++ -Wall -MD -D_FORTIFY_SOURCE=2 -Wpointer-arith -Wshadow -Wwrite-strings -Wcast-align -Wredundant-decls -Wdisabled-optimization -Wfloat-equal -Wmultichar -Wmissing-noreturn -Woverloaded-virtual -Wsign-promo -funit-at-a-time -Wstrict-null-sentinel -Weffc++ </CXXFLAGS>
+      <LDFLAGS>-L/usr/local/lib -L/usr/local/lib </LDFLAGS>
+      <LIBS>-lpcap -lcairo -lfontconfig -lfreetype -lpixman-1 -lexpat  -lsqlite3 -lcrypto -lssl -lcrypto -ldl -lz </LIBS>
+      <compilation_date>2020-06-04T22:58:40</compilation_date>
+      <library name="boost" version="107100"/>
+      <library name="sqlite" version="3.31.1" source_id="2020-01-27 19:55:54 3bfa9cc97da10598521b342961df8f5f68c7388fa117345eeb516eaa837balt1"/>
+    </build_environment>
+    <execution_environment>
+      <os_sysname>Linux</os_sysname>
+      <os_release>5.4.0-37-generic</os_release>
+      <os_version>#41-Ubuntu SMP Wed Jun 3 18:57:02 UTC 2020</os_version>
+      <host>asus</host>
+      <arch>x86_64</arch>
+      <command_line>tcpflow -i wlp2s0 -e http port 80</command_line>
+      <uid>0</uid>
+      <username>root</username>
+      <start_time>2020-06-12T03:55:32Z</start_time>
+    </execution_environment>
+  </creator>
+  <configuration>
+  </configuration>
+  <tdelta>0</tdelta>
+  <configuration>
+    <fileobject>
+      <filename>088.208.252.147.00080-192.168.008.100.39742</filename>
+      <filesize>4097328</filesize>
+      <tcpflow startime='2020-06-12T03:55:37.607362Z' endtime='2020-06-12T03:57:22.921829Z' mac_daddr='b8:8a:60:63:36:6b' mac_saddr='14:5f:94:2f:48:be' family='2' src_ipn='88.208.252.147' dst_ipn='192.168.8.100' srcport='80' dstport='39742' packets='1320' len='4168608' />
+      
+    <byte_runs>
+     <byte_run file_offset='266'><fileobject><filename>088.208.252.147.00080-192.168.008.100.39742-HTTPBODY-001</filename><filesize>963147</filesize></fileobject></byte_run>
+     <byte_run file_offset='963679'><fileobject><filename>088.208.252.147.00080-192.168.008.100.39742-HTTPBODY-002</filename><filesize>1747840</filesize></fileobject></byte_run>
+     <byte_run file_offset='2711786'><fileobject><filename>088.208.252.147.00080-192.168.008.100.39742-HTTPBODY-003</filename><filesize>1385542</filesize></fileobject></byte_run>
+    </byte_runs>
+    </fileobject>
+    <fileobject>
+      <filename>192.168.008.100.39742-088.208.252.147.00080</filename>
+      <filesize>1360</filesize>
+      <tcpflow startime='2020-06-12T03:55:37.339904Z' endtime='2020-06-12T03:57:22.562083Z' mac_daddr='14:5f:94:2f:48:be' mac_saddr='b8:8a:60:63:36:6b' family='2' src_ipn='192.168.8.100' dst_ipn='88.208.252.147' srcport='39742' dstport='80' packets='997' len='55198' />
+    </fileobject>
+  </configuration>
+  <summary />
+  <open_fds_at_end>2</open_fds_at_end>
+  <max_open_flows>2</max_open_flows>
+  <total_flows>2</total_flows>
+  <flow_map_size>2</flow_map_size>
+  <total_packets>2317</total_packets>
+  <rusage>
+    <utime>0.028221</utime>
+    <stime>0.018814</stime>
+    <maxrss>15924</maxrss>
+    <minflt>1344</minflt>
+    <majflt>0</majflt>
+    <nswap>0</nswap>
+    <inblock>0</inblock>
+    <oublock>16088</oublock>
+    <clocktime>112.489190</clocktime>
+  </rusage>
+</dfxml>

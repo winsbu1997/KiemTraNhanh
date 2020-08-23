@@ -1,0 +1,11 @@
+USER tungong
+PASS 12345678
+SYST
+FEAT
+OPTS UTF8 ON
+PWD
+TYPE I
+PASV
+SIZE /src.zip
+MDTM /src.zip
+RETR /src.zip

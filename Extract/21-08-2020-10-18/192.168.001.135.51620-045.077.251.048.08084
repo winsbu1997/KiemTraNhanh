@@ -1,0 +1,11 @@
+USER tungong
+PASS 12345678
+SYST
+FEAT
+OPTS UTF8 ON
+PWD
+TYPE I
+PASV
+SIZE /data/VirusShare__PE.zip
+MDTM /data/VirusShare__PE.zip
+RETR /data/VirusShare__PE.zip
