@@ -12,13 +12,26 @@ import threading
 import time
 import datetime
 import shutil
+import shlex
 
-
+# dat golbal 1 so truong chinh
 extract_Path = '/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract'
 active_File = os.path.join(os.getcwd(), "Test.pcap")
 extractZip_Path = '/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract_Zip'
+export_SMB2 = "/home/duong/Desktop/Do-An/QuickCheck_Virus/SMB2"
+
+deny_MimiType = ['application/octet-stream', 'text/xml', 'text/html', 'image/png', 'image/jpg', 'text/css', 'text/x-asm', 'application/x-dosdriver',
+                     'application/vnd.ms-cab-compressed', 'image/gif', 'application/x-chrome-extension', 'image/jpeg', 'application/font-sfnt']
+portFtp = "08084"
+mime = magic.Magic(mime=True)
+
 if(os.path.exists(extract_Path) == False):
     os.mkdir(extract_Path)
+if(os.path.exists(extractZip_Path) == False):
+    os.mkdir(extractZip_Path)
+if(os.path.exists(export_SMB2) == False):
+    os.mkdir(export_SMB2)
+
 
 uri = "http://localhost:8123/upload-multifile"
 
@@ -72,26 +85,35 @@ def Extract_Zip(path, task):
     # range(len(list)) = [f for f in listFile if os.path.isfile(f)]
     for index in listFile:
         if(os.path.isfile(index)):
+            # rename: filename to arg c++ not read
             tmp = index
             if(tmp.find("(") != -1):
                 tmp = tmp.replace('(', '_')
             if(tmp.find(")") != -1):
                 tmp = tmp.replace(')', '_')
             os.rename(index, tmp)
-            file = Static_Analyst(tmp, task)
-            if(file != ''):
-                dynamicFile.append(tmp)
-                taskFile.append(task)
+            mime_Type = mime.from_file(tmp)
+            if(mime_Type not in deny_MimiType and mime_Type != "text/plain" and mime_Type != "application/zip"):
+                file = Static_Analyst(tmp, task)
+                if(file != ''):           
+                    dynamicFile.append(tmp)
+                    taskFile.append(task)
+
     return dynamicFile, taskFile
 
 
-def Parse_FileName(dualIp, path):
+def Parse_FileName(dualIp, path, markFtp):
     task = Task('', '', '', '', '', '', '', '', '', '', '')
     fullPath = os.path.join(path, dualIp)
+    if(os.path.isfile(fullPath) == False):
+        return '', ''
     realNamePath = fullPath
-    # if(os.path.isfile(fullPath) == False):
-    #     return '', ''
-
+    vlan = ''
+    try:
+        vlan = '--' + dualIp.split('--')[1][0:2]
+    except:
+        print("not vlan")
+    
     ip = dualIp.split('-')
     ip_Source = ip[1][0:15]
     port_Source = ip[1][16:]
@@ -102,13 +124,13 @@ def Parse_FileName(dualIp, path):
     count = 1
 
     # if(port_Source == "443" or port_Destination == "443"):
-    #     return "", ""
-
+    #     return "", "" + '--' + str(vlan)
+  
     task.source_ip = ip_Source
     task.destination_ip = ip_Destination
 
-    if(len(dualIp) > 43):
-        http_Rev = ip_Source + '.' + port_Source + '-' + ip_Destination + '.' + port_Destination
+    if(len(dualIp) > 47):
+        http_Rev = ip_Source + '.' + port_Source + '-' + ip_Destination + '.' + port_Destination + vlan
         if(ip[-1][0:3].isnumeric):
             tt = int(ip[-1][0:3])
 
@@ -123,7 +145,7 @@ def Parse_FileName(dualIp, path):
                             task.destination_url = line.split(":")[1:]
                         if(line.find("GET") != -1):
                             if(tt == count):
-                                # Parse Http
+                                # Parse http
                                 parseGet = line.split(' ')
                                 fileName = parseGet[1].split('/')[-1]
                                 task.protocol = "http"
@@ -135,13 +157,15 @@ def Parse_FileName(dualIp, path):
 
     else: 
         flag = 1
-        for f in os.listdir(path):
+        find_Ftp = ip_Destination + "." + portFtp + '-' +  ip_Source 
+        for f in markFtp:
             # port begin index: 15, 37
-            if(f.find(ip_Destination, 0) != -1 and f.find(ip_Source, 21) != -1 and f.find("08084", 15) != -1):
+            if(f.find(find_Ftp) != -1):
                 try:
+                    f = f.split('--')[0]
                     port_ClientTranfer = f.split('.')[-1]
-                    fullpath = os.path.join(path, f)
-                    with open(fullpath, "r") as ins:
+                    fullpath_FtpServer = os.path.join(path, f) + vlan
+                    with open(fullpath_FtpServer, "r") as ins:
                         for line in ins:
                             line = line.strip()
                             if(line.find("227") != -1):
@@ -151,7 +175,7 @@ def Parse_FileName(dualIp, path):
                                 p2 = p[-1].replace(').','')
                                 port_Control = p1 + int(p2) 
                                 if(port_Control == int(port_Destination)):
-                                    ftp_Rev = ip_Source + '.' + port_ClientTranfer + '-' + ip_Destination + '.' + "08084"
+                                    ftp_Rev = ip_Source + '.' + port_ClientTranfer + '-' + ip_Destination + '.' + portFtp + vlan
                                     full_FindPath = os.path.join(path, ftp_Rev)
                                     with open(full_FindPath, "r") as ins1:
                                         for index in ins1:
@@ -169,16 +193,49 @@ def Parse_FileName(dualIp, path):
 
                 except:
                     continue
-            
+
         if(flag == 1):
             return "",""
-            
+
         #print (ip_Source + ':' + port_Source + '\n' + ip_Destination + ':' + port_Destination)
     #task.destination_url = ''
     realNamePath = os.path.join(path, fileName)
     os.rename(fullPath, realNamePath)
     return realNamePath, task
 
+    
+def Export_SMB2(path):
+    files_SendResquest = [] 
+    # active_File
+    query2 = "tshark -nr " + path + " --export-objects smb," + export_SMB2 + " -Y 'smb2.flags.response == 1 && smb2.cmd == 5 && frame.len == 410'"
+    out = subprocess.Popen(shlex.split(query2), stdout=subprocess.PIPE)
+    while(1):
+        line = out.stdout.readline()
+        if(not line):
+            break
+        line = line.decode('utf-8').strip()
+        line = ' '.join(line.split())
+        #line = line.replace("  "," ")
+        result = line.split(" ")
+        ip_Source = result[2]
+        ip_Destination = result[4]
+        fileName = line.split(":")[1].strip()
+
+        task = Task('', '', '', '', '', '', '', '', '', '', '')
+        task.destination_ip = ip_Destination
+        task.source_ip = ip_Source
+        task.file_name = fileName
+        
+        print("ip_src = " + ip_Source, "ip_dst = " + ip_Destination, "fileName = " + fileName)
+
+        checkPath = export_SMB2 + "/%5c" + fileName
+        if(os.path.isfile(checkPath)):
+            file = Static_Analyst(checkPath, task)
+            if(file != ''):
+                files_SendResquest.append(checkPath)
+    
+    return files_SendResquest
+            
 
 def Static_Analyst(fullPath, taskJson):
     tmp = fullPath.replace('(', '_')
@@ -211,9 +268,6 @@ def Static_Analyst(fullPath, taskJson):
 
 def Dynamic_Analyst(listFile, path, taskJson):
     SendMultiFile(listFile, taskJson)
-    #shutil.rmtree(path, ignore_errors=True)
-    #os.removedirs(path)
-
 
 def Capture_Pcap():
     #while(1):
@@ -228,8 +282,6 @@ def Capture_Pcap():
 
 
 def Handle_Pcap(path):
-    deny_MimiType = ['application/octet-stream', 'text/xml', 'text/html', 'image/png', 'image/jpg', 'text/css', 'text/x-asm', 'application/x-dosdriver',
-                     'application/vnd.ms-cab-compressed', 'image/gif', 'application/x-chrome-extension', 'image/jpeg', 'application/font-sfnt']
     files_SendResquest = []
     task_SendRequest = []
     #active_File = os.path.join(os.getcwd(),"SMB2.pcap")
@@ -238,17 +290,37 @@ def Handle_Pcap(path):
     subprocess.check_output(query1, shell=True)
 
     # extract SMB
-    query2 = "tshark -nr " + active_File + " --export-objects smb," + path
-    #subprocess.check_output(query2, shell=True)
+    #Export_SMB2()
     list = os.listdir(path)
-    mime = magic.Magic(mime=True)
-    for index in range(len(list)):
-        #fullPath = Parse_FileName(list[index], path)
-        fullPath = os.path.join(path, list[index])
+
+    markFtp = []
+    # remove file unuse
+    for index in list:
+        fullPath = os.path.join(path, index)
         mime_Type = mime.from_file(fullPath)
         if(mime_Type in deny_MimiType):
             os.remove(fullPath)
         else:
+            if(index.find(portFtp) != -1):
+                markFtp.append(index)
+
+    list = os.listdir(path)
+
+    # handle file 
+    for index in range(len(list)):  
+        no_FullPath = os.path.join(path, list[index])
+        mime_Type = mime.from_file(no_FullPath)  
+        
+        if(mime_Type != 'text/plain'):
+            #print(fullPath + "\n")
+            ValidIpAddressRegex = r'''(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)'''
+            check = re.search(ValidIpAddressRegex, list[index])
+            if(check != None):
+                fullPath, task = Parse_FileName(list[index], path, markFtp)
+            if(fullPath == ''):
+                os.remove(no_FullPath)
+                continue
+            
             if(mime_Type == 'application/zip'):
                 try:
                     extract_Files, extract_Tasks = Extract_Zip(fullPath, task)
@@ -256,20 +328,14 @@ def Handle_Pcap(path):
                     task_SendRequest.extend(extract_Tasks)
                 except:
                     print('not Extract file zip : ' + fullPath)
-            if(mime_Type != 'text/plain'):
-                #print(fullPath + "\n")
-                ValidIpAddressRegex = r'''(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)'''
-                check = re.search(ValidIpAddressRegex, list[index])
-                if(check):
-                    fullPath, task = Parse_FileName(list[index], path)
-                if(fullPath == ''):
-                    continue
-                file = Static_Analyst(fullPath, task)
-                print(fullPath + "\n")
-                if(file != ''):
-                    task = task.obj_dict()
-                    task_SendRequest.append(task)
-                    files_SendResquest.append(file)
+
+            file = Static_Analyst(fullPath, task)
+            print(fullPath + "\n")
+
+            if(file != ''):
+                task = task.obj_dict()
+                task_SendRequest.append(task)
+                files_SendResquest.append(file)
 
 
     #print(files_SendResquest)
@@ -285,4 +351,5 @@ if __name__ == "__main__":
     # inputfile = args.file
     # Handle_Pcap(path)
 
-    Capture_Pcap()
+    #Capture_Pcap()
+    Export_SMB2("/home/duong/Desktop/Do-An/SMB2.pcap")

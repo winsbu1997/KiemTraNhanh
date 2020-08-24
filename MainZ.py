@@ -13,11 +13,13 @@ import time
 import datetime
 import shutil
 import json
+import shlex
 
 
 extract_Path = '/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Extract'
 active_File = os.path.join(os.getcwd(), "Test.pcap")
 extractZip_Path = '/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Extract_Zip'
+export_SMB2 = '/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Extract_SMB2'
 
 portFtp = "08084"
 
@@ -27,6 +29,10 @@ mime = magic.Magic(mime=True)
 
 if(os.path.exists(extract_Path) == False):
     os.mkdir(extract_Path)
+if(os.path.exists(extractZip_Path) == False):
+    os.mkdir(extractZip_Path)
+if(os.path.exists(export_SMB2) == False):
+    os.mkdir(export_SMB2)
 
 
 class Task(object):
@@ -106,7 +112,7 @@ def Parse_FileName(dualIp, path, markFtp):
     realNamePath = fullPath
     vlan = ''
     try:
-        vlan = dualIp.split('--')[1][0:2]
+        vlan = '--' + dualIp.split('--')[1][0:2]
     except:
         print("not vlan")
     
@@ -126,7 +132,7 @@ def Parse_FileName(dualIp, path, markFtp):
     task.destination_ip = ip_Destination
 
     if(len(dualIp) > 47):
-        http_Rev = ip_Source + '.' + port_Source + '-' + ip_Destination + '.' + port_Destination + '--' + vlan
+        http_Rev = ip_Source + '.' + port_Source + '-' + ip_Destination + '.' + port_Destination + vlan
         if(ip[-1][0:3].isnumeric):
             tt = int(ip[-1][0:3])
 
@@ -160,7 +166,7 @@ def Parse_FileName(dualIp, path, markFtp):
                 try:
                     f = f.split('--')[0]
                     port_ClientTranfer = f.split('.')[-1]
-                    fullpath_FtpServer = os.path.join(path, f) + "--" + vlan
+                    fullpath_FtpServer = os.path.join(path, f) + vlan
                     with open(fullpath_FtpServer, "r") as ins:
                         for line in ins:
                             line = line.strip()
@@ -171,7 +177,7 @@ def Parse_FileName(dualIp, path, markFtp):
                                 p2 = p[-1].replace(').','')
                                 port_Control = p1 + int(p2) 
                                 if(port_Control == int(port_Destination)):
-                                    ftp_Rev = ip_Source + '.' + port_ClientTranfer + '-' + ip_Destination + '.' + portFtp + "--" + vlan
+                                    ftp_Rev = ip_Source + '.' + port_ClientTranfer + '-' + ip_Destination + '.' + portFtp + vlan
                                     full_FindPath = os.path.join(path, ftp_Rev)
                                     with open(full_FindPath, "r") as ins1:
                                         for index in ins1:
@@ -199,7 +205,38 @@ def Parse_FileName(dualIp, path, markFtp):
     os.rename(fullPath, realNamePath)
     return realNamePath, task
 
+def Export_SMB2():
+    files_SendResquest = [] 
+    # active_File
+    query2 = "tshark -nr " + active_File + " --export-objects smb," + export_SMB2 + " -Y 'smb2.flags.response == 1 && smb2.cmd == 5 && frame.len == 410'"
+    out = subprocess.Popen(shlex.split(query2), stdout=subprocess.PIPE)
+    while(1):
+        line = out.stdout.readline()
+        if(not line):
+            break
+        line = line.decode('utf-8').strip()
+        line = ' '.join(line.split())
+        #line = line.replace("  "," ")
+        result = line.split(" ")
+        ip_Source = result[2]
+        ip_Destination = result[4]
+        fileName = line.split(":")[1].strip()
 
+        task = Task('', '', '', '', '', '', '', '', '', '', '')
+        task.destination_ip = ip_Destination
+        task.source_ip = ip_Source
+        task.file_name = fileName
+        
+        print("SMB : ip_src = " + ip_Source, "ip_dst = " + ip_Destination, "fileName = " + fileName)
+
+        checkPath = export_SMB2 + "/%5c" + fileName
+        if(os.path.isfile(checkPath)):
+            file = Static_Analyst(checkPath, task)
+            if(file != ''):
+                files_SendResquest.append(checkPath)
+    
+    return files_SendResquest
+            
 def Static_Analyst(fullPath, taskJson):
     tmp = fullPath.replace('(', '_')
     tmp = tmp.replace(')', '_')
@@ -260,7 +297,9 @@ def Handle_Pcap(path):
     subprocess.check_output(query1, shell=True)
 
     # extract SMB
-    query2 = "tshark -nr " + active_File + " --export-objects smb," + path
+    list_SMB = Export_SMB2()
+    if(len(list_SMB) > 0):
+        files_SendResquest.extend(list_SMB)
     #subprocess.check_output(query2, shell=True)
     list = os.listdir(path)
 
