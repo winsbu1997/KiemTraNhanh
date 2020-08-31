@@ -4,7 +4,7 @@ import magic
 import os
 import glob
 import subprocess
-import zipfile
+from pyunpack import Archive
 import requests
 import re
 from threading import Thread
@@ -14,16 +14,28 @@ import datetime
 import shutil
 import json
 import shlex
+from configparser import ConfigParser
 
 
-extract_Path = '/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Extract'
+config_object = ConfigParser()
+config_object.read("config.ini")
+# dat golbal 1 so truong chinh
+folderConfig = config_object["FOLDERCONFIG"]
+extract_Path = folderConfig["Http_Ftp"]
 active_File = os.path.join(os.getcwd(), "Test.pcap")
-extractZip_Path = '/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Extract_Zip'
-export_SMB2 = '/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Extract_SMB2'
+extractZip_Path = folderConfig["Compressed"]
+export_SMB2 = folderConfig["Smb2"]
 
 portFtp = "08084"
+apiConfig = config_object["APICONFIG"]
+uri_Check = apiConfig["UrlCheck"]
+url_AddItems = apiConfig["UrlPost"]
 
-deny_MimiType = ['application/octet-stream', 'text/xml', 'text/html', 'image/png', 'image/jpg', 'text/css', 'text/x-asm', 'application/x-dosdriver', 'application/vnd.ms-cab-compressed', 'image/gif', 'application/x-chrome-extension', 'image/jpeg', 'application/font-sfnt', 'text/troff', 'application/vnd.ms-opentype','application/vnd.ms-fontobject','image/x-icon','image/svg+xml']
+deny_MimiType = ['application/octet-stream', 'text/xml', 'text/html', 'image/png', 'image/jpg', 'text/css', 'text/x-asm', 'application/x-dosdriver', 
+                'application/vnd.ms-cab-compressed', 'image/gif', 'application/json', 'application/x-chrome-extension', 'image/jpeg', 
+                'application/font-sfnt', 'text/troff', 'application/vnd.ms-opentype','application/vnd.ms-fontobject','image/x-icon','image/svg+xml','application/x-xz',
+                'application/zlib', 'audio/x-mp4a-latm','application/gzip', 'image/svg', 'application/x-setupscript','image/webp','video/mp4', 'application/x-tex-tfm', 
+                'application/x-bzip2']
 
 mime = magic.Magic(mime=True)
 
@@ -55,17 +67,19 @@ class Task(object):
                 'md5': self.md5, 'protocol': self.protocol, 'file_size': self.file_size}
 
 
-uri = "http://192.168.126.26:5002/api/v1/capture/check"
-
-
 def SendMultiFile(file_list, taskJson):
     for index in range(len(file_list)):
-        req = {'files[]': open(file_list[index], 'rb')}
+        # Tu sua, neu ko check exist bi kill neu file ko ton tai 
+        if os.path.exists(file_list[index]): # KHONG XOA DONG nAY !!!!!!
+            req = {'files[]': open(file_list[index], 'rb')}
 
-        print('taskJson[index]', taskJson[index])
-        data = requests.post(uri, files=req, data=taskJson[index])
-        r = data.json()
-        print(r)
+            print('taskJson[index]', taskJson[index])
+            data = requests.post(uri_Check, files=req, data=taskJson[index])
+            print('data SendMultiFile', data)
+            r = data.json()
+            print(r)
+        else:
+            print('File not exists')
 
 
 def dirwalk(dir, bag, wildcards):
@@ -76,13 +90,12 @@ def dirwalk(dir, bag, wildcards):
             dirwalk(fullpath, bag, wildcards)
 
 
-def Extract_Zip(path, task):
+def Extract_FileCompressed(path, task):
     listFile = []
     dynamicFile = []
     taskFile = []
     fullPath = os.path.normpath(path)
-    with zipfile.ZipFile(fullPath, 'r') as zip_ref:
-        zip_ref.extractall(extractZip_Path)
+    Archive(fullPath).extractall(extractZip_Path)
     dirwalk(extractZip_Path, listFile, '*')
     # range(len(list)) = [f for f in listFile if os.path.isfile(f)]
     for index in listFile:
@@ -97,7 +110,8 @@ def Extract_Zip(path, task):
             mime_Type = mime.from_file(tmp)
             if(mime_Type not in deny_MimiType and mime_Type != "text/plain" and mime_Type != "application/zip"):
                 file = Static_Analyst(tmp, task)
-                if(file != ''):           
+                if(file != ''):   
+                    task = task.obj_dict()           
                     dynamicFile.append(tmp)
                     taskFile.append(task)
 
@@ -131,31 +145,33 @@ def Parse_FileName(dualIp, path, markFtp):
     task.source_ip = ip_Source
     task.destination_ip = ip_Destination
 
+    fileName = ''
     if(len(dualIp) > 47):
         http_Rev = ip_Source + '.' + port_Source + '-' + ip_Destination + '.' + port_Destination + vlan
-        if(ip[-1][0:3].isnumeric):
+        try:
+            #if(ip[-1][0:3].isnumeric):
             tt = int(ip[-1][0:3])
 
             full_FindPath = os.path.join(path, http_Rev)
             if(os.path.isfile(full_FindPath) == False):
                 return '', ''
-            try:
-                with open(full_FindPath, "r") as ins:
-                    for line in ins:
-                        line = line.strip()
-                        if(line.find("Host") != -1):
-                            task.destination_url = line.split(":")[1:]
-                        if(line.find("GET") != -1):
-                            if(tt == count):
-                                # Parse http
-                                parseGet = line.split(' ')
-                                fileName = parseGet[1].split('/')[-1]
-                                task.protocol = "http"
-                                break
-                            else:
-                                count = count + 1
-            except:
-                return '', ''
+
+            with open(full_FindPath, "r") as ins:
+                for line in ins:
+                    line = line.strip()
+                    if(line.find("Host") != -1):
+                        task.destination_url = line.split(":")[1:]
+                    if(line.find("GET") != -1):
+                        if(tt == count):
+                            # Parse http
+                            parseGet = line.split(' ')
+                            fileName = parseGet[1].split('/')[-1]
+                            task.protocol = "http"
+                            break
+                        else:
+                            count = count + 1
+        except:
+            return '', ''
 
     else: 
         flag = 1
@@ -201,12 +217,15 @@ def Parse_FileName(dualIp, path, markFtp):
 
         #print (ip_Source + ':' + port_Source + '\n' + ip_Destination + ':' + port_Destination)
     #task.destination_url = ''
-    realNamePath = os.path.join(path, fileName)
-    os.rename(fullPath, realNamePath)
-    return realNamePath, task
+    if fileName:
+        realNamePath = os.path.join(path, fileName.split('?')[0].split('=')[0])
+        os.rename(fullPath, realNamePath)
+        return realNamePath, task
+    return None, None
 
 def Export_SMB2():
     files_SendResquest = [] 
+    task_SendRequest = []
     # active_File
     query2 = "tshark -nr " + active_File + " --export-objects smb," + export_SMB2 + " -Y 'smb2.flags.response == 1 && smb2.cmd == 5 && frame.len == 410'"
     out = subprocess.Popen(shlex.split(query2), stdout=subprocess.PIPE)
@@ -227,24 +246,42 @@ def Export_SMB2():
         task.source_ip = ip_Source
         task.file_name = fileName
         
-        print("SMB : ip_src = " + ip_Source, "ip_dst = " + ip_Destination, "fileName = " + fileName)
+        print("ip_src = " + ip_Source, "ip_dst = " + ip_Destination, "fileName = " + fileName)
 
         checkPath = export_SMB2 + "/%5c" + fileName
         if(os.path.isfile(checkPath)):
+            mime_Type = mime.from_file(checkPath)
             file = Static_Analyst(checkPath, task)
-            if(file != ''):
-                files_SendResquest.append(checkPath)
+            if(file != ''):              
+                if(mime_Type == 'application/zip' or mime_Type == 'application/x-7z-compressed' or mime_Type == 'application/x-rar-compressed'):
+                    try:
+                        extract_Files, extract_Tasks = Extract_FileCompressed(checkPath, task)
+                        files_SendResquest.extend(extract_Files)
+                        task_SendRequest.extend(extract_Tasks)
+                    except:
+                        print('Not Extract file compressed : ' + checkPath)
+                else:
+                    task = task.obj_dict()
+                    files_SendResquest.append(checkPath)
+                    task_SendRequest.append(task)
     
-    return files_SendResquest
+    return files_SendResquest, task_SendRequest
             
 def Static_Analyst(fullPath, taskJson):
     tmp = fullPath.replace('(', '_')
     tmp = tmp.replace(')', '_')
+    tmp = tmp.replace('&', '_')
     os.rename(fullPath, tmp)
     fullPath = tmp
 
     scan = "./BinarySearch " + fullPath
-    out = subprocess.check_output(scan, shell=True)
+    out = ''
+    try:
+        out = subprocess.check_output(scan, shell=True)
+    except:
+        print(fullPath + "not analyst static")
+    if(out == ''):
+        return ''
     out_str = out.decode("utf-8")
     if(out_str.split("/")[0] != ''):
         #print(out, out_str, out_str.split("/"), out.decode("utf-8"))
@@ -257,8 +294,7 @@ def Static_Analyst(fullPath, taskJson):
         taskJson.time_received = datetime.datetime.now().strftime('%H:%M:%S')
         taskJson.date_received = datetime.datetime.now().strftime('%Y-%m-%d')
 
-        urlUpdate = "http://192.168.126.26:5002/api/v1/capture"
-        r = requests.post(urlUpdate, json=taskJson.obj_dict())
+        r = requests.post(url_AddItems, json=taskJson.obj_dict())
         data = r.json()
         print(data)
         return ''
@@ -267,7 +303,7 @@ def Static_Analyst(fullPath, taskJson):
 
 def Dynamic_Analyst(listFile, path, taskJson):
     SendMultiFile(listFile, taskJson)
-    #shutil.rmtree(path, ignore_errors=True)
+    shutil.rmtree(path, ignore_errors=True)
 
 
 def Capture_Pcap():
@@ -275,7 +311,7 @@ def Capture_Pcap():
     # Handle_Pcap(path1)
     while(1):
         subprocess.check_output(
-            "tshark -i enp2s0f2 -w Test.pcap -a duration:30", shell=True)
+            "tshark -i enp2s0f2 -w Test.pcap -a duration:60", shell=True)
 
         path = str(datetime.datetime.now().strftime('%d-%m-%Y-%H-%M'))
         path = os.path.join(extract_Path, path)
@@ -283,8 +319,8 @@ def Capture_Pcap():
         Handle_Pcap(path)
         os.remove(active_File)
         if os.path.exists(path):
-            #shutil.rmtree(path, ignore_errors=True)
-            os.removedirs(path)
+            shutil.rmtree(path, ignore_errors=True)
+            #os.removedirs(path)
 
 
 def Handle_Pcap(path):
@@ -297,9 +333,10 @@ def Handle_Pcap(path):
     subprocess.check_output(query1, shell=True)
 
     # extract SMB
-    list_SMB = Export_SMB2()
+    list_SMB, list_Task = Export_SMB2()
     if(len(list_SMB) > 0):
         files_SendResquest.extend(list_SMB)
+        task_SendRequest.extend(list_Task)
     #subprocess.check_output(query2, shell=True)
     list = os.listdir(path)
 
@@ -327,25 +364,27 @@ def Handle_Pcap(path):
             check = re.search(ValidIpAddressRegex, list[index])
             if(check != None):
                 fullPath, task = Parse_FileName(list[index], path, markFtp)
+                if fullPath is None:
+                    continue
             if(fullPath == ''):
                 os.remove(no_FullPath)
                 continue
             
-            if(mime_Type == 'application/zip'):
+            if(mime_Type == 'application/zip' or mime_Type == 'application/x-7z-compressed' or mime_Type == 'application/x-rar-compressed'):
                 try:
-                    extract_Files, extract_Tasks = Extract_Zip(fullPath, task)
+                    extract_Files, extract_Tasks = Extract_FileCompressed(fullPath, task)
                     files_SendResquest.extend(extract_Files)
                     task_SendRequest.extend(extract_Tasks)
                 except:
                     print('not Extract file zip : ' + fullPath)
+            else:
+                file = Static_Analyst(fullPath, task)
+                print(fullPath + "\n")
 
-            file = Static_Analyst(fullPath, task)
-            print(fullPath + "\n")
-
-            if(file != ''):
-                task = task.obj_dict()
-                task_SendRequest.append(task)
-                files_SendResquest.append(file)
+                if(file != ''):
+                    task = task.obj_dict()
+                    task_SendRequest.append(task)
+                    files_SendResquest.append(file)
 
 
     print(files_SendResquest)
