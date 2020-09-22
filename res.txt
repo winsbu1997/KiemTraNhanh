@@ -1,1 +1,1 @@
-2ced1005bd86c9f4bf6b1095bbc47b01  /home/duong/Desktop/Do-An/QuickCheck_Virus/SMB2/%5cDATABASE.sql
+c81bd70019268bb56cfb1c215dfd71e1  /home/duong/Desktop/Do-An/QuickCheck_Virus/Extract/07-09-2020-23-00/ca18f91a-d4ec-4d59-98a8-0c3711aaa8c4
