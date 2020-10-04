@@ -140,7 +140,8 @@ def Parse_FileName(dualIp, path, markFtp):
     try:
         vlan = '--' + dualIp.split('--')[1][0:2]
     except:
-        print("not vlan")
+        #print("not vlan")
+        key = 1
     
     ip = dualIp.split('-')
     ip_Source = ip[1][0:15]
@@ -170,11 +171,14 @@ def Parse_FileName(dualIp, path, markFtp):
             if(os.path.isfile(full_FindPath) == False):
                 return '', ''
 
+            markHost = 0
             with open(full_FindPath, "r") as ins:
                 for line in ins:
                     line = line.strip()
                     if(line.find("Host") != -1):
                         task.destination_url = str(line.split(" ")[1])
+                        if(markHost == 1):
+                            break
                         #print(task.destination_url)
                     if(line.find("GET") != -1):
                         if(tt == count):
@@ -182,9 +186,7 @@ def Parse_FileName(dualIp, path, markFtp):
                             parseGet = line.split(' ')
                             fileName = parseGet[1].split('/')[-1]
                             task.protocol = "http"
-                            if(count == 1):
-                                task.destination_url = str(ins[1].strip().split(" ")[1])
-                            break
+                            markHost = 1                          
                         else:
                             count = count + 1
         except:
@@ -321,14 +323,16 @@ def Static_Analyst(fullPath, taskJson):
         file_Status = os.stat(fullPath)
         taskJson.file_size = file_Status.st_size
         taskJson.md5 = out_str.split("/")[1]
-
-        r = requests.post(url_AddItems, json=taskJson.obj_dict())
-        data = r.json()
-        print(data)
-        return ''
+        try:
+            r = requests.post(url_AddItems, json=taskJson.obj_dict())
+            data = r.json()
+            print(data)
+            return ''
+        except:
+            return fullPath
     return fullPath
 
-def Dynamic_Analyst(listFile, path, taskJson, logger):
+def Dynamic_Analyst(listFile, taskJson, logger): 
     SendMultiFile(listFile, taskJson, logger)
 
 # Bat va xu li goi tin
@@ -339,9 +343,7 @@ def Capture_Pcap():
     interface = iObject["Interface"]
     command = "tshark -i " + interface + " -w Test.pcap -a duration:60"
     while(1):
-        subprocess.check_output(
-            command, shell=True)
-
+        subprocess.check_output(command, shell=True)
         path = str(datetime.datetime.now().strftime('%d-%m-%Y-%H-%M'))
         path = os.path.join(extract_Path, path)
         os.mkdir(path)
@@ -349,14 +351,11 @@ def Capture_Pcap():
         os.remove(active_File)
         if os.path.exists(path):
             shutil.rmtree(path, ignore_errors=True)
-            os.removedirs(path)
-
 
 def Handle_Pcap(path):
     
     files_SendResquest = []
     task_SendRequest = []
-    #active_File = os.path.join(os.getcwd(),"SMB2.pcap")
     # extract http, ftp
     query1 = "tcpflow -r " + active_File + " -o " + path + " -e http"
     subprocess.check_output(query1, shell=True)
@@ -366,7 +365,6 @@ def Handle_Pcap(path):
     if(len(list_SMB) > 0):
         files_SendResquest.extend(list_SMB)
         task_SendRequest.extend(list_Task)
-    #subprocess.check_output(query2, shell=True)
     list = os.listdir(path)
 
     markFtp = []
@@ -376,7 +374,7 @@ def Handle_Pcap(path):
         mime_Type = mime.from_file(fullPath)
         check = Check_UnFile(mime_Type)
 
-        # remove file unuse
+        # Add find Ftp 
         if(mime_Type == "text/plain"):
             if(index.find(portFtp) != -1):
                 markFtp.append(index)
@@ -395,7 +393,7 @@ def Handle_Pcap(path):
             #print(fullPath + "\n")
             ValidIpAddressRegex = r'''(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)'''
             check = re.search(ValidIpAddressRegex, list[index])
-            if(check != None):
+            if(check is not None):
                 fullPath, task = Parse_FileName(list[index], path, markFtp)
                 if fullPath is None:
                     continue
@@ -435,7 +433,7 @@ def Handle_Pcap(path):
     logger.info(" -------  \t Finish \t  ------  \n ")
     print(" -------  \t Finish \t  ------  \n ")
 
-    t1 = threading.Thread(target=Dynamic_Analyst, args=(files_SendResquest, path, task_SendRequest, logger))
+    t1 = threading.Thread(target=Dynamic_Analyst, args=(files_SendResquest, task_SendRequest, logger))
     t1.start()
 
 
