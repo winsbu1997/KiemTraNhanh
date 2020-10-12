@@ -1,9 +1,24 @@
-import logging
+import asyncio
+import datetime
+import random
 
-logging.basicConfig(level= logging.DEBUG, filename='Log/myapp.log',filemode= "a",format='%(asctime)s %(levelname)s:%(message)s')
-logger = logging.getLogger(__name__)
 
-if __name__ == "__main__":
-    logger.info("this file has %d words", 45)
-    logger.debug("kaka")
-    logger.warning("Error")
+async def my_sleep_func():
+    await asyncio.sleep(random.randint(0, 5))
+
+
+async def display_date(num, loop):
+    end_time = loop.time() + 50.0
+    while True:
+        print("Loop: {} Time: {}".format(num, datetime.datetime.now()))
+        if (loop.time() + 1.0) >= end_time:
+            break
+        await my_sleep_func()
+
+
+loop = asyncio.get_event_loop()
+
+asyncio.ensure_future(display_date(1, loop))
+asyncio.ensure_future(display_date(2, loop))
+
+loop.run_forever()

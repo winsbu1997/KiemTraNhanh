@@ -1,0 +1,31 @@
+2020-10-07 20:15:43,831 INFO: -------  	 File Send Dynamic  	  ------  
+ 
+2020-10-07 20:15:43,832 INFO:Count: 0
+2020-10-07 20:15:43,833 INFO: -------  	 Finish 	  ------  
+ 
+2020-10-07 20:16:45,342 INFO: -------  	 File Send Dynamic  	  ------  
+ 
+2020-10-07 20:16:45,343 INFO:Count: 0
+2020-10-07 20:16:45,343 INFO: -------  	 Finish 	  ------  
+ 
+2020-10-07 20:16:45,601 DEBUG:Starting new HTTP connection (1): localhost:5002
+2020-10-07 20:16:45,612 DEBUG:http://localhost:5002 "POST /api/v1/checkurl HTTP/1.1" 404 232
+2020-10-07 20:17:46,665 INFO: -------  	 File Send Dynamic  	  ------  
+ 
+2020-10-07 20:17:46,665 INFO:Count: 0
+2020-10-07 20:17:46,666 INFO: -------  	 Finish 	  ------  
+ 
+2020-10-07 20:17:46,838 DEBUG:Starting new HTTP connection (1): localhost:5002
+2020-10-07 20:18:48,150 INFO: -------  	 File Send Dynamic  	  ------  
+ 
+2020-10-07 20:18:48,151 INFO:Count: 0
+2020-10-07 20:18:48,151 INFO: -------  	 Finish 	  ------  
+ 
+2020-10-07 20:18:48,302 DEBUG:Starting new HTTP connection (1): localhost:5002
+2020-10-07 20:18:48,319 DEBUG:http://localhost:5002 "POST /api/v1/checkurl HTTP/1.1" 404 232
+2020-10-07 20:19:49,292 INFO: -------  	 File Send Dynamic  	  ------  
+ 
+2020-10-07 20:19:49,293 INFO:Count: 0
+2020-10-07 20:19:49,293 INFO: -------  	 Finish 	  ------  
+ 
+2020-10-07 20:19:49,496 DEBUG:Starting new HTTP connection (1): localhost:5002

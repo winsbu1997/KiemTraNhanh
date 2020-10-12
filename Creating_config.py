@@ -4,15 +4,16 @@ config_object = ConfigParser()
 
 # set duong dan luu file cature
 config_object["FOLDERCONFIG"] = {
-    "Http_Ftp": "/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract",
-    "Smb2": "/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract_SMB2",
-    "Compressed" : "/home/duong/Desktop/Do-An/QuickCheck_Virus/Extract_Zip",
-    "Log" : "/home/duong/Desktop/Do-An/QuickCheck_Virus/Log"
+    "Http_Ftp": "Extract",
+    "Smb2": "Extract_SMB2",
+    "Compressed" : "Extract_Zip",
+    "Log" : "Log"
 }
 
 config_object["APICONFIG"] = {
-    "UrlCheck" : "http://192.168.126.26:5002/api/v1/capture/check",
-    "UrlPost" : "http://192.168.126.26:5002/api/v1/capture"
+    "UrlCheck" : "http://192.168.126.25:5002/api/v1/capture/checkurl",
+    "UrlPost" : "http://192.168.126.26:5002/api/v1/capture",
+    "UrlCheck_Malware" : "http://192.168.126.25:5002/api/v1/capture/check"
 }
 
 config_object["INTERFACE"] = {

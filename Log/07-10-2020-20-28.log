@@ -1,0 +1,12 @@
+2020-10-07 20:28:27,953 INFO: -------  	 File Send Dynamic  	  ------  
+ 
+2020-10-07 20:28:27,953 INFO:Count: 0
+2020-10-07 20:28:27,955 INFO: -------  	 Finish 	  ------  
+ 
+2020-10-07 20:29:29,270 INFO: -------  	 File Send Dynamic  	  ------  
+ 
+2020-10-07 20:29:29,271 INFO:Count: 0
+2020-10-07 20:29:29,271 INFO: -------  	 Finish 	  ------  
+ 
+2020-10-07 20:29:29,510 DEBUG:Starting new HTTP connection (1): localhost:5002
+2020-10-07 20:29:29,519 DEBUG:http://localhost:5002 "POST /api/v1/checkurl HTTP/1.1" 404 232

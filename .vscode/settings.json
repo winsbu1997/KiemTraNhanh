@@ -2,5 +2,5 @@
     "files.associations": {
         "fstream": "cpp"
     },
-    "python.pythonPath": "/home/duong/anaconda3/envs/WebApi/bin/python"
+    "python.pythonPath": "/home/duong/anaconda3/bin/python"
 }

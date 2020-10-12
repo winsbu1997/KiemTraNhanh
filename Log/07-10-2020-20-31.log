@@ -1,0 +1,11 @@
+2020-10-07 20:31:50,293 INFO: -------  	 File Send Dynamic  	  ------  
+ 
+2020-10-07 20:31:50,294 INFO:Count: 0
+2020-10-07 20:31:50,295 INFO: -------  	 Finish 	  ------  
+ 
+2020-10-07 20:32:51,121 INFO: -------  	 File Send Dynamic  	  ------  
+ 
+2020-10-07 20:32:51,122 INFO:Count: 0
+2020-10-07 20:32:51,122 INFO: -------  	 Finish 	  ------  
+ 
+2020-10-07 20:32:51,238 DEBUG:Starting new HTTP connection (1): localhost:5002

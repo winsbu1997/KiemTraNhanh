@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+from Url_Request import Run_FindUrl
 from sys import path
 import magic
 import os
@@ -9,6 +9,7 @@ import requests
 import re
 from threading import Thread
 import threading
+from multiprocessing import Process, Pool, TimeoutError
 import time
 import datetime
 import shutil
@@ -16,7 +17,7 @@ import json
 import shlex
 from configparser import ConfigParser
 import logging
-
+import asyncio
 
 config_object = ConfigParser()
 config_object.read("config.ini")
@@ -30,8 +31,9 @@ log = folderConfig["Log"]
 
 portFtp = "08084"
 apiConfig = config_object["APICONFIG"]
-uri_Check = apiConfig["UrlCheck"]
+url_CheckMalware = apiConfig["UrlCheck_Malware"]
 url_AddItems = apiConfig["UrlPost"]
+url_Check = apiConfig["UrlCheck"]
 
 deny_MimiType = ['application/octet-stream', 'application/x-dosdriver', 'application/vnd.ms-cab-compressed', 'application/json', 
                 'application/x-chrome-extension', 'application/font-sfnt', 'application/vnd.ms-opentype','application/vnd.ms-fontobject', 
@@ -76,23 +78,7 @@ def Check_UnFile(mime_Type):
         if(mime_Type == index):
             return 1
     return 0
-
-def SendMultiFile(file_list, taskJson, logger):
-    for index in range(len(file_list)):
-        # Tu sua, neu ko check exist bi kill neu file ko ton tai 
-        if os.path.exists(file_list[index]): # KHONG XOA DONG nAY !!!!!!
-            req = {'files[]': open(file_list[index], 'rb')}
-
-            #print('taskJson[index]', taskJson[index])
-            logger.info("Analyst Begin[%d]: %s", index, file_list[index])
-            data = requests.post(uri_Check, files=req, data=taskJson[index])
-            r = data.json()
-            print(r)
-            logger.info("Analyst Success[%d]: %s", index, file_list[index])
-        else:
-            print(file_list[index] + ': File not exists')
-            logger.warning("Analyst Error[%d]: %s", index, file_list[index])
-
+    
 def dirwalk(dir, bag, wildcards):
     bag.extend(glob.glob(os.path.join(dir, wildcards)))
     for f in os.listdir(dir):
@@ -332,11 +318,24 @@ def Static_Analyst(fullPath, taskJson):
             return fullPath
     return fullPath
 
-def Dynamic_Analyst(listFile, taskJson, logger): 
-    SendMultiFile(listFile, taskJson, logger)
+async def Dynamic_Analyst(file_list, taskJson, logger):
+    for index in range(len(file_list)):
+        # Tu sua, neu ko check exist bi kill neu file ko ton tai 
+        if os.path.exists(file_list[index]): # KHONG XOA DONG nAY !!!!!!
+            req = {'files[]': open(file_list[index], 'rb')}
+
+            #print('taskJson[index]', taskJson[index])
+            logger.info("Analyst Begin[%d]: %s", index, file_list[index])
+            data = await requests.post(url_CheckMalware, files=req, data=taskJson[index])
+            r = data.json()
+            print(r)
+            logger.info("Analyst Success[%d]: %s", index, file_list[index])
+        else:
+            print(file_list[index] + ': File not exists')
+            logger.warning("Analyst Error[%d]: %s", index, file_list[index]) 
 
 # Bat va xu li goi tin
-def Capture_Pcap():
+async def Capture_Pcap():
     # path1 = "/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Extract/21-08-2020-10-47"
     # Handle_Pcap(path1)
     iObject = config_object["INTERFACE"]
@@ -347,12 +346,14 @@ def Capture_Pcap():
         path = str(datetime.datetime.now().strftime('%d-%m-%Y-%H-%M'))
         path = os.path.join(extract_Path, path)
         os.mkdir(path)
-        Handle_Pcap(path)
+        p = Process(target= Run_FindUrl, args= (active_File,url_Check, ))
+        p.start()
+        await Handle_Pcap(path)
         os.remove(active_File)
         if os.path.exists(path):
             shutil.rmtree(path, ignore_errors=True)
 
-def Handle_Pcap(path):
+async def Handle_Pcap(path):
     
     files_SendResquest = []
     task_SendRequest = []
@@ -433,9 +434,11 @@ def Handle_Pcap(path):
     logger.info(" -------  \t Finish \t  ------  \n ")
     print(" -------  \t Finish \t  ------  \n ")
 
-    t1 = threading.Thread(target=Dynamic_Analyst, args=(files_SendResquest, task_SendRequest, logger))
-    t1.start()
-
+    await Dynamic_Analyst(files_SendResquest, task_SendRequest, logger)
+    # my_thread = []
+    # t1 = threading.Thread(target=Dynamic_Analyst, args=(files_SendResquest, task_SendRequest, logger))
+    # t1.start()
+    # my_thread.append(t1)
 
 if __name__ == "__main__":
     #path = "/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Extract/17-08-2020-14-02"
@@ -446,8 +449,7 @@ if __name__ == "__main__":
     # Handle_Pcap(path)
     #task = Task('192.168.1.18','192.168.147.85','http',1,'Xorer.eg','','','','','','')
     # Static_Analyst('/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Virus.Win32.Xorer.eg', task)
-    Capture_Pcap()
-    #Export_SMB2("/home/duong/Desktop/Do-An/smb2_putty_xfer.pcap")
-    # list = []
-    # list.append("/home/mtaav/Desktop/QuetNhanh/QuickCheck_Virus/Virus.Win32.Xorer.eg")
-    # SendMultiFile(list)
+    loop = asyncio.get_event_loop()
+
+    asyncio.ensure_future(Capture_Pcap())
+    loop.run_forever()
