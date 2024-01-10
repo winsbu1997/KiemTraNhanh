@@ -129,7 +129,7 @@ def Parse_FileName(dualIp, path, markFtp, packetstart):
         #print("not vlan")
         key = 1
     size = getSize(path)
-    if(size != packetStart.length) return false;
+    if(size != packetStart.length) return ''
     ip = dualIp.split('-')
     ip_Source = ip[1][0:15]
     port_Source = ip[1][16:]
