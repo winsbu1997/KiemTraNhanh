@@ -116,7 +116,7 @@ def Extract_FileCompressed(path, task):
     return dynamicFile, taskFile
 
 # Http, Ftp
-def Parse_FileName(dualIp, path, markFtp):
+def Parse_FileName(dualIp, path, markFtp, packetstart):
     task = Task('', '', '', '', '', '', '', '', '', '', '')
     fullPath = os.path.join(path, dualIp)
     if(os.path.isfile(fullPath) == False):
@@ -128,7 +128,8 @@ def Parse_FileName(dualIp, path, markFtp):
     except:
         #print("not vlan")
         key = 1
-    
+    size = getSize(path)
+    if(size != packetStart.length) return false;
     ip = dualIp.split('-')
     ip_Source = ip[1][0:15]
     port_Source = ip[1][16:]
